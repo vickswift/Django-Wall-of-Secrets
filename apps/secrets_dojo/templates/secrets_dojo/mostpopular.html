@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>most popular secrets</title>
+    {% load staticfiles %}
+    <link rel="stylesheet" href="{% static 'secrets/css/skeleton.css' %}">
+    <link rel="stylesheet" href="{% static 'secrets/css/normalize.css' %}">
+ <!-- Ask about humanize/ natural time -->
+  </head>
+  <body>
+    <a href="/secrets">Back to Secrets page</a>
+    <div class="container">
+      <h1>Most popular secrets</h1>
+      {% for secret in mostpop %}
+      <p>{{secret.content}}<br>({{ secret.created_at }})</p>
+      {% if user in secret.likedby.all %}
+      <p> you liked this </p>
+
+      {% elif secret.creator.id != request.session.id %}
+      <form action='/likesecret/pop/{{secret.id}}' method='POST'>
+        {% csrf_token %}
+        <input type="submit" value="like">
+      </form>
+      {{secret.count}}
+      {% endif %}
+
+      {% if secret.creator.id == request.session.id %}
+      <p> You posted this </p>
+
+
+      <form action='/deletesecret/pop/{{secret.id}}' method='POST'>
+          {% csrf_token %}
+          <input type="submit" value="Remove" class="remove">
+      </form>
+      {% endif %}
+      {% endfor %}
+
+    </div>
+  </body>
+</html>

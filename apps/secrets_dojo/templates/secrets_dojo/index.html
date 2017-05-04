@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html >
+  <head>
+    <meta charset="UTF-8">
+    <title>Login And Registration</title>
+    {%load staticfiles%}
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="{% static 'secrets_dojo/css/login-style.css'%}">
+    <link rel="stylesheet" href="{% static 'secrets_dojo/css/register-style.css'%}">
+  </head>
+
+  <body>
+      <!-- Register -->
+      <div class="register">
+        <h1>Register</h1>
+         <form action="{% url 'process_registration' %}" method="POST" class="form-horizontal">
+         {% csrf_token %}
+           <input type="text" name="first_name" placeholder="First Name" />
+           <input type="text" name="last_name" placeholder="Last Name" />
+           <input type="text" name="email" placeholder="Email" />
+           <input type="text" name="username" placeholder="Username" />
+           <p><small>Password should contain at least 8 characters</small></p>
+           <input type="password" name="password" placeholder="Password" />
+           <input type="password" name="confirm_password" placeholder="Confirm Password" />
+           <input type="text" name="dob" placeholder="mm/dd/yyyy" />
+           <input type="submit" class="btn btn-primary btn-block btn-large" value="Join!">
+         </form>
+         <p>Already have an account? <a href="#">Sign In</a></p>
+     </div>
+
+     <!-- Login -->
+    <div class="login">
+    	<h2>Login</h2>
+      <form action="{% url 'login' %}" method="POST" class="form-horizontal">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Username"  />
+        <!-- <input type="text" name="email" placeholder="Email"  /> -->
+        <input type="password" name="password" placeholder="Password"  />  <!--Could add 'required="required"' field to make it robust -->
+        <input type="submit" class="btn btn-primary btn-block btn-large" value="Let me in!">
+      </form>
+    </div>
+
+    <!-- Error messages -->
+      <div class="error-messages">
+        <!-- return error messages -->
+        {% if messages %}
+         <ul>
+             {% for message in messages %}
+             <li class="{{ message.tags }}">{{ message }}</li>
+             {% endfor %}
+         </ul>
+         {% endif %}
+      </div>
+
+  </body>
+</html>
